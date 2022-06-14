@@ -1,0 +1,16 @@
+version: "3"
+
+services:
+  ci:
+    build:
+      context: .
+      target: ci
+    container_name: bowlingblog
+    image: bowlingblog:ci
+    environment:
+      - IS_DOCKER=1
+    volumes:
+      - .:/code/
+    depends_on:
+      - flask_app
+    command: bash -c ":"

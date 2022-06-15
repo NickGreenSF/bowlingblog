@@ -29,12 +29,37 @@ class Game(Base):
 
     __tablename__ = "games"
     id = Column(Integer, primary_key=True)
+    score = Column(Integer, nullable=False)
+    frames = Column(String(63))  # nullable
+    location = Column(String(255))
+    user = relationship("User", back_populates="games")
 
     def __repr__(self):
         return f"Game(id={self.id})"
 
     def to_json(self):
         return {"id": self.id}
+
+
+class User(Base):
+    """User table."""
+
+    __tablename__ = "users"
+    id = Column(Integer, primary_key=True)
+    username = Column(String(255), nullable=False)
+    firebase_id = Column(String(255), nullable=False, unique=True)
+    admin = Column(Boolean, default=False)
+    has_input_frames = Column(Boolean, default=False)
+    games = relationship("Game", back_populates="user")
+    total_score = Column(Integer)
+    total_games = Column(Integer)
+    total_strikes = Column(Integer)
+
+    def __repr__(self):
+        return f"User(id={self.id}, username={self.username})"
+
+    def to_json(self):
+        return {"username": self.username, "firebase_id": self.firebase_id}
 
 
 class EngineGetter:

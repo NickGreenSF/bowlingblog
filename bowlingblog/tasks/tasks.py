@@ -7,15 +7,6 @@ from sqlalchemy.orm import Session
 redis_broker = RedisBroker(host="redis")
 dramatiq.set_broker(redis_broker)
 
-# engine = EngineGetter.get_or_create_engine()
-# with Session(engine) as session:
-#     new_game = Game()
-#     session.add(new_game)
-#     print(session)
-#     print(new_game)
-#     session.commit()
-#     current_app.logger.info("ID: %s", new_game.id)
-
 
 def save_new_game():
     engine = EngineGetter.get_or_create_engine()
@@ -26,7 +17,3 @@ def save_new_game():
         session.commit()
         current_app.logger.info("ID: %s", new_game.id)
         return new_game
-
-
-def ex():
-    return ["hello"]

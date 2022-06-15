@@ -29,7 +29,12 @@ class Game(Base):
 
     __tablename__ = "games"
     id = Column(Integer, primary_key=True)
-    test = Column(String)
+
+    def __repr__(self):
+        return f"Game(id={self.id})"
+
+    def to_json(self):
+        return {"id": self.id}
 
 
 class EngineGetter:

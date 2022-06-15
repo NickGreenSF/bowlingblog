@@ -8,13 +8,14 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 
 # App Blueprints: Blueprint for each resource
+from bowlingblog.endpoints.games import game_bp
 
 api_prefix_v1 = "/api/v1"
 
 
 def register_blueprints(app):
     """Register all blueprints for the app."""
-    pass
+    app.register_blueprint(game_bp, url_prefix=api_prefix_v1)
 
 
 app = Flask(__name__)

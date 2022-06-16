@@ -1,5 +1,6 @@
 """Module that defines/creates/holds ORMs for the database."""
 from datetime import datetime
+from email.policy import default
 
 from sqlalchemy import (
     Boolean,
@@ -32,6 +33,7 @@ class Game(Base):
     score = Column(Integer, nullable=False)
     frames = Column(String(63))  # nullable
     location = Column(String(255))
+    user_id = Column(Integer, ForeignKey("users.id"))
     user = relationship("User", back_populates="games")
 
     def __repr__(self):

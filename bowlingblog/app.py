@@ -16,6 +16,7 @@ api_prefix_v1 = "/api/v1"
 def register_blueprints(app):
     """Register all blueprints for the app."""
     app.register_blueprint(game_bp, url_prefix=api_prefix_v1)
+    pass
 
 
 app = Flask(__name__)

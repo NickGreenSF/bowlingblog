@@ -14,7 +14,13 @@ class Games(Resource):
         return jsonify(games=[gm.to_json() for gm in gms])
 
     def post(self):
-        new_game = save_new_game()
+        body = request.get_json()
+        score = body.get("score")
+        if score is None:
+            abort(400, message="Game score not found in request")
+        frames = body.get("frames")
+        location = body.get("location")
+        new_game = save_new_game(score, frames, location)
         return jsonify(new_game.to_json())
 
 

@@ -40,7 +40,7 @@ class Game(Base):
         return f"Game(id={self.id})"
 
     def to_json(self):
-        return {"id": self.id, "score": self.score, "frames": self.frames, "location": self.location}
+        return {"id": self.id, "score": self.score, "frames": self.frames, "location": self.location, "user_id": self.user_id}
 
 
 class User(Base):

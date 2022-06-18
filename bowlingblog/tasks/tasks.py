@@ -32,7 +32,8 @@ dramatiq.set_broker(redis_broker)
 def save_new_game(score, frames=None, location=None):
     engine = EngineGetter.get_or_create_engine()
     with Session(engine) as session:
-        new_game = Game(score=score, frames=frames, location=location, user=1)
+        new_game = Game(score=score, frames=frames,
+                        location=location, user_id=1)
         session.add(new_game)
         assert new_game.score is not None
         session.commit()

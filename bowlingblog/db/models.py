@@ -31,7 +31,8 @@ class Game(Base):
     __tablename__ = "games"
     id = Column(Integer, primary_key=True)
     score = Column(Integer, nullable=False)
-    frames = Column(String(63))  # nullable
+    # not nullable. Whether this is or isn't nullable changes the function of the app.
+    frames = Column(String(63), nullable=False)
     location = Column(String(255))
     user_id = Column(Integer, ForeignKey("users.id"))
     user = relationship("User", back_populates="games")

@@ -36,6 +36,8 @@ class Game(Base):
     location = Column(String(255))
     user_id = Column(Integer, ForeignKey("users.id"))
     user = relationship("User", back_populates="games")
+    description = Column(String(2000))
+    date = Column(String(255))
 
     def __repr__(self):
         return f"Game(id={self.id})"
@@ -52,11 +54,9 @@ class User(Base):
     username = Column(String(255), nullable=False)
     firebase_id = Column(String(255), nullable=False, unique=True)
     admin = Column(Boolean, default=False)
-    has_input_frames = Column(Boolean, default=False)
     games = relationship("Game", back_populates="user")
     total_score = Column(Integer)
     total_games = Column(Integer)
-    total_strikes = Column(Integer)
 
     def __repr__(self):
         return f"User(id={self.id}, username={self.username})"

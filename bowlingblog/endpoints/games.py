@@ -19,8 +19,12 @@ class Games(Resource):
         if score is None:
             abort(400, message="Game score not found in request")
         frames = body.get("frames")
+        if frames is None:
+            abort(400, message="Game score not found in request")
         location = body.get("location")
-        new_game = save_new_game(score, frames, location)
+        description = body.get("description")
+        date = body.get("date")
+        new_game = save_new_game(score, frames, location, description, date)
         return jsonify(new_game.to_json())
 
 

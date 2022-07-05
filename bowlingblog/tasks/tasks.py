@@ -60,3 +60,12 @@ def get_user_by_uid(uid):
         user = session.query(User).filter(
             User.firebase_id == uid).one_or_none()
         return user
+
+
+def get_user_games(uid):
+    user = get_user_by_uid(uid)
+    assert user is not None
+    engine = EngineGetter.get_or_create_engine()
+    with Session(engine) as session:
+        games = session.query(Game).filter(Game.user_id == user.id)
+        return games

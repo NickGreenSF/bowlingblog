@@ -9,6 +9,7 @@ from flask_cors import CORS
 
 # App Blueprints: Blueprint for each resource
 from bowlingblog.endpoints.games import game_bp
+from bowlingblog.endpoints.users import user_bp
 
 api_prefix_v1 = "/api/v1"
 
@@ -16,6 +17,7 @@ api_prefix_v1 = "/api/v1"
 def register_blueprints(app):
     """Register all blueprints for the app."""
     app.register_blueprint(game_bp, url_prefix=api_prefix_v1)
+    app.register_blueprint(user_bp, url_prefix=api_prefix_v1)
     pass
 
 

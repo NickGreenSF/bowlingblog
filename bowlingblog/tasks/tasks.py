@@ -50,3 +50,11 @@ def save_new_user(username, firebase_id):
         session.add(new_user)
         session.commit()
         return new_user
+
+
+def get_user_by_uid(uid):
+    engine = EngineGetter.get_or_create_engine()
+    with Session(engine) as session:
+        user = session.query(User).filter(
+            User.firebase_id == uid).one_or_none()
+        return user

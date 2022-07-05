@@ -36,6 +36,7 @@ class Game(Base):
     location = Column(String(255))
     user_id = Column(Integer, ForeignKey("users.id"))
     user = relationship("User", back_populates="games")
+    username = Column(String(255))
     description = Column(String(2000))
     date = Column(String(255))
 
@@ -43,7 +44,7 @@ class Game(Base):
         return f"Game(id={self.id})"
 
     def to_json(self):
-        return {"id": self.id, "score": self.score, "frames": self.frames, "location": self.location, "user_id": self.user_id}
+        return {"id": self.id, "score": self.score, "frames": self.frames, "location": self.location, "user_id": self.user_id, "username": self.username}
 
 
 class User(Base):

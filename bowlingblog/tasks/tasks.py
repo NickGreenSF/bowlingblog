@@ -29,11 +29,13 @@ dramatiq.set_broker(redis_broker)
 #     current_app.logger.info("Score: %s", new_game.score)
 
 
-def save_new_game(score, frames, location=None, description=None, date=None):
+def save_new_game(score, frames, uid, location=None, description=None, date=None):
+    user = get_user_by_uid(uid)
+    assert user is not None
     engine = EngineGetter.get_or_create_engine()
     with Session(engine) as session:
         new_game = Game(score=score, frames=frames,
-                        location=location, description=description, date=date, user_id=1)
+                        location=location, description=description, date=date, user_id=user.id, username=user.username)
         session.add(new_game)
         assert new_game.score is not None
         assert new_game.frames is not None

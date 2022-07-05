@@ -24,7 +24,11 @@ class Games(Resource):
         location = body.get("location")
         description = body.get("description")
         date = body.get("date")
-        new_game = save_new_game(score, frames, location, description, date)
+        uid = body.get("uid")
+        if uid is None:
+            abort(400, message="no user")
+        new_game = save_new_game(
+            score, frames, uid, location, description, date)
         return jsonify(new_game.to_json())
 
 

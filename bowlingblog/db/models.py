@@ -1,20 +1,14 @@
 """Module that defines/creates/holds ORMs for the database."""
-from datetime import datetime
-from email.policy import default
 
 from sqlalchemy import (
     Boolean,
     Column,
-    DateTime,
-    Enum,
     ForeignKey,
     Integer,
     String,
     create_engine,
 )
-from sqlalchemy.dialects.postgresql import ENUM
-from sqlalchemy.ext.associationproxy import association_proxy
-from sqlalchemy.orm import declarative_base, relationship, backref
+from sqlalchemy.orm import declarative_base, relationship
 
 from bowlingblog.util import DOCKER_POSTGRES_URL, BowlingException
 
@@ -22,7 +16,9 @@ Base = declarative_base()
 
 
 class NotFoundException(BowlingException):
-    pass
+    '''
+    this doesn't do anything
+    '''
 
 
 class Game(Base):
@@ -44,7 +40,12 @@ class Game(Base):
         return f"Game(id={self.id})"
 
     def to_json(self):
-        return {"id": self.id, "score": self.score, "frames": self.frames, "location": self.location, "user_id": self.user_id, "username": self.username}
+        '''
+        how this object is returned to the front end
+        '''
+        return {"id": self.id, "score": self.score, "frames": self.frames,
+                "location": self.location, "user_id": self.user_id,
+                "username": self.username, "description": self.description}
 
 
 class User(Base):
@@ -63,6 +64,9 @@ class User(Base):
         return f"User(id={self.id}, username={self.username})"
 
     def to_json(self):
+        '''
+        how this object is returned to the front end
+        '''
         return {"username": self.username, "firebase_id": self.firebase_id}
 
 
@@ -81,5 +85,8 @@ class EngineGetter:
 
 
 def clear_models():
+    '''
+    delete everything lol
+    '''
     engine = EngineGetter.get_or_create_engine()
     Base.metadata.drop_all(engine)

@@ -1,9 +1,14 @@
+'''
+checks to see if a user is signed in.
+This function isn't currently used anywhere but I thought it might be nice to have.
+'''
+
 import logging
 from functools import wraps
 
 from firebase_admin.auth import verify_id_token
 from flask import request, g
-from flask_restful import abort, current_app
+from flask_restful import abort
 from bowlingblog.tasks.tasks import get_user_by_uid
 
 logger = logging.getLogger(__name__)
@@ -44,9 +49,11 @@ def requires_auth_method_wrapper(meth):
 
 
 def requires_auth(clazz):
-    # Note: must use this awkward addition thing instead of mutating the method_decorators list
-    # because if method decorators is defined for Resource but not Child(Resource) = clazz,
-    # we'll just be mutating Resource.method_decorators
+    '''
+    Note: must use this awkward addition thing instead of mutating the method_decorators list
+    because if method decorators is defined for Resource but not Child(Resource) = clazz,
+    we'll just be mutating Resource.method_decorators
+    '''
     clazz.method_decorators = clazz.method_decorators + \
         [requires_auth_method_wrapper]
     return clazz

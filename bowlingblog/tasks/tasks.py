@@ -1,8 +1,11 @@
-from bowlingblog.db.models import (EngineGetter, Game, User)
+'''
+this is where most of the actual talking to the db takes place
+'''
 import dramatiq
 from dramatiq.brokers.redis import RedisBroker
 from flask_restful import current_app
 from sqlalchemy.orm import Session
+from bowlingblog.db.models import (EngineGetter, Game, User)
 
 redis_broker = RedisBroker(host="redis")
 dramatiq.set_broker(redis_broker)
@@ -30,12 +33,16 @@ dramatiq.set_broker(redis_broker)
 
 
 def save_new_game(score, frames, uid, location=None, description=None, date=None):
+    '''
+    takes in game info and saves the game using those fields
+    '''
     user = get_user_by_uid(uid)
     assert user is not None
     engine = EngineGetter.get_or_create_engine()
     with Session(engine) as session:
         new_game = Game(score=score, frames=frames,
-                        location=location, description=description, date=date, user_id=user.id, username=user.username)
+                        location=location, description=description, date=date,
+                        user_id=user.id, username=user.username)
         session.add(new_game)
         assert new_game.score is not None
         assert new_game.frames is not None
@@ -45,6 +52,9 @@ def save_new_game(score, frames, uid, location=None, description=None, date=None
 
 
 def save_new_user(username, firebase_id):
+    '''
+    makes new user, all we store is firebase id and username, firebase stores passwords
+    '''
     engine = EngineGetter.get_or_create_engine()
     with Session(engine) as session:
         session.expire_on_commit = False
@@ -55,6 +65,9 @@ def save_new_user(username, firebase_id):
 
 
 def get_user_by_uid(uid):
+    '''
+    pulls out a user based on firebase id
+    '''
     engine = EngineGetter.get_or_create_engine()
     with Session(engine) as session:
         user = session.query(User).filter(
@@ -63,6 +76,9 @@ def get_user_by_uid(uid):
 
 
 def get_user_games(uid):
+    '''
+    gets user id, then gets all games with that id
+    '''
     user = get_user_by_uid(uid)
     assert user is not None
     engine = EngineGetter.get_or_create_engine()

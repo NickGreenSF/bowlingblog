@@ -30,8 +30,7 @@ class Game(Base):
     # not nullable. Whether this is or isn't nullable changes the function of the app.
     frames = Column(String(63), nullable=False)
     location = Column(String(255))
-    user_id = Column(Integer, ForeignKey("users.id"))
-    user = relationship("User", back_populates="games")
+    firebase_id = Column(String(255), ForeignKey("users.firebase_id"))
     username = Column(String(255))
     description = Column(String(2000))
     date = Column(String(255))
@@ -44,7 +43,7 @@ class Game(Base):
         how this object is returned to the front end
         '''
         return {"id": self.id, "score": self.score, "frames": self.frames,
-                "location": self.location, "user_id": self.user_id,
+                "location": self.location, "user_id": self.firebase_id,
                 "username": self.username, "description": self.description}
 
 
@@ -56,7 +55,6 @@ class User(Base):
     username = Column(String(255), nullable=False)
     firebase_id = Column(String(255), nullable=False, unique=True)
     admin = Column(Boolean, default=False)
-    games = relationship("Game", back_populates="user")
     total_score = Column(Integer)
     total_games = Column(Integer)
 

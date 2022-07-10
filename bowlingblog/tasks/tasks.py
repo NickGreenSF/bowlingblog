@@ -42,7 +42,7 @@ def save_new_game(score, frames, uid, location=None, description=None, date=None
     with Session(engine) as session:
         new_game = Game(score=score, frames=frames,
                         location=location, description=description, date=date,
-                        user_id=user.id, username=user.username)
+                        firebase_id=uid, username=user.username)
         session.add(new_game)
         assert new_game.score is not None
         assert new_game.frames is not None
@@ -83,5 +83,6 @@ def get_user_games(uid):
     assert user is not None
     engine = EngineGetter.get_or_create_engine()
     with Session(engine) as session:
-        games = session.query(Game).filter(Game.user_id == user.id)
+        games = session.query(Game).filter(
+            Game.firebase_id == user.firebase_id)
         return games

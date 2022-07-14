@@ -10,27 +10,6 @@ from bowlingblog.db.models import (EngineGetter, Game, User)
 redis_broker = RedisBroker(host="redis")
 dramatiq.set_broker(redis_broker)
 
-# engine = EngineGetter.get_or_create_engine()
-# with Session(engine) as session:
-#     session.expire_on_commit = False
-#     new_user = User(firebase_id="test", username="N")
-#     session.add(new_user)
-#     session.commit()
-
-# frames_1 = "9-|7/|9/|62|X|9/|X|7/|63|X9-"
-# frames_2 = "9/|71|X|9/|72|7/|X|7/|X|9/8"
-# frames_3 = "X|X|72|9/|7/|9-|X|9-|X|72-"
-# scores = [156, 169, 156]
-
-# engine = EngineGetter.get_or_create_engine()
-# with Session(engine) as session:
-#     new_game = Game(score=scores[2], frames=frames_3,
-#                     location="Earl Anthony's Dublin Bowl", user_id=1)
-#     session.add(new_game)
-#     assert new_game.score is not None
-#     session.commit()
-#     current_app.logger.info("Score: %s", new_game.score)
-
 
 def save_new_game(score, frames, uid, location=None, description=None, date=None):
     '''
@@ -86,3 +65,17 @@ def get_user_games(uid):
         games = session.query(Game).filter(
             Game.firebase_id == user.firebase_id)
         return games
+
+
+def delete_game(game_id):
+    '''
+    gets game and deletes it
+    '''
+    engine = EngineGetter.get_or_create_engine()
+    with Session(engine) as session:
+        game = (session.query(Game).filter(
+            Game.id == game_id)).one_or_none()
+        assert game is not None
+        session.delete(game)
+        session.commit()
+        return True

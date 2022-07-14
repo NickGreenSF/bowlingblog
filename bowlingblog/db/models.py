@@ -44,7 +44,8 @@ class Game(Base):
         '''
         return {"id": self.id, "score": self.score, "frames": self.frames,
                 "location": self.location, "user_id": self.firebase_id,
-                "username": self.username, "description": self.description}
+                "username": self.username, "description": self.description,
+                "date": self.date}
 
 
 class User(Base):

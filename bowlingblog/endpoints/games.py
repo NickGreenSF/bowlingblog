@@ -6,7 +6,7 @@ from flask import Blueprint, jsonify, request
 from flask_restful import Api, Resource
 
 from bowlingblog.repositories.game_repository import GameRepository
-from bowlingblog.tasks.tasks import save_new_game
+from bowlingblog.tasks.tasks import delete_game, save_new_game
 
 game_bp = Blueprint("games", __name__)
 game_api = Api(game_bp)
@@ -41,6 +41,15 @@ class Games(Resource):
         new_game = save_new_game(
             score, frames, uid, location, description, date)
         return jsonify(new_game.to_json())
+
+    def delete(self):
+        '''
+        deletes game by id
+        '''
+        body = request.get_json()
+        gid = body.get("id")
+        assert gid is not None
+        return delete_game(gid)
 
 
 game_api.add_resource(Games, "/games")

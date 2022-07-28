@@ -34,6 +34,7 @@ class Game(Base):
     username = Column(String(255))
     description = Column(String(2000))
     date = Column(String(255))
+    splits = Column(String(64))
 
     def __repr__(self):
         return f"Game(id={self.id})"
@@ -45,7 +46,7 @@ class Game(Base):
         return {"id": self.id, "score": self.score, "frames": self.frames,
                 "location": self.location, "user_id": self.firebase_id,
                 "username": self.username, "description": self.description,
-                "date": self.date}
+                "date": self.date, "splits": self.splits}
 
 
 class User(Base):

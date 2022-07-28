@@ -38,8 +38,9 @@ class Games(Resource):
         date = body.get("date")
         uid = body.get("uid")
         assert uid is not None
+        splits = body.get("splits")
         new_game = save_new_game(
-            score, frames, uid, location, description, date)
+            score, frames, uid, location, description, date, splits)
         return jsonify(new_game.to_json())
 
     def delete(self):

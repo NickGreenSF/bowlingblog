@@ -11,7 +11,7 @@ redis_broker = RedisBroker(host="redis")
 dramatiq.set_broker(redis_broker)
 
 
-def save_new_game(score, frames, uid, location=None, description=None, date=None):
+def save_new_game(score, frames, uid, location=None, description=None, date=None, splits=None):
     '''
     takes in game info and saves the game using those fields
     '''
@@ -21,7 +21,7 @@ def save_new_game(score, frames, uid, location=None, description=None, date=None
     with Session(engine) as session:
         new_game = Game(score=score, frames=frames,
                         location=location, description=description, date=date,
-                        firebase_id=uid, username=user.username)
+                        firebase_id=uid, username=user.username, splits=splits)
         session.add(new_game)
         assert new_game.score is not None
         assert new_game.frames is not None
